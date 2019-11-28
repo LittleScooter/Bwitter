@@ -1,0 +1,19 @@
+header {
+    height: 60px;
+    padding-top: 12px;
+    width: 100%;
+    background-color: #f31d4f;
+}
+
+body {
+    background-color: #404040;
+}
+
+#loginButton,
+#regButton {
+    background-color: #404040;
+    float: right;
+    margin-right: 20px;
+    border-radius: 15px;
+    border: none;
+}
