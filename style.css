@@ -1,12 +1,25 @@
 header {
-    height: 60px;
-    padding-top: 12px;
+    height: 65px;
+    padding-top: 15px;
     width: 100%;
     background-color: #f31d4f;
 }
 
 body {
     background-color: #404040;
+}
+
+#mainFeed {
+    background-color: #303030;
+    height: 11as00px;
+    margin-top: 50px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+#middleSpace{
+    height: 1100px;
+    margin-top: 50px;
 }
 
 #loginButton,
