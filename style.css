@@ -9,24 +9,53 @@ body {
     background-color: #404040;
 }
 
+h2 {
+    margin: none;
+    color: white;
+}
+
 #mainFeed {
     background-color: #303030;
-    height: 11as00px;
-    margin-top: 50px;
+    height: 1100px;
     border-top-right-radius: 20px;
     border-top-left-radius: 20px;
 }
 
-#middleSpace{
+#middleSpace {
     height: 1100px;
-    margin-top: 50px;
+}
+
+#topmiddleSpace,
+#topSpace {
+    height: 50px;
+    margin-top: 15px;
 }
 
 #loginButton,
 #regButton {
-    background-color: #404040;
+    background-color: #ab1336;
     float: right;
     margin-right: 20px;
     border-radius: 15px;
     border: none;
+}
+
+#perFeedButton,
+#globFeedButton {
+    background-color: #404040;
+    border-radius: 15px;
+    border: none;
+    float: right;
+}
+
+#bweetButton {
+    background-color: #f31d4f;
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    width: 130px;
+    height: 52px;
+    float: right;
+    margin-top: 20px;
+    margin-right: 20px;
 }

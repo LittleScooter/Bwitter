@@ -14,18 +14,31 @@
 <body>
 
     <header>
+        <!-- <h2>🅱️witter</h2> -->
         <button type="button" id="regButton" class="btn btn-secondary">Register</button>
         <button type="button" id="loginButton" class="btn btn-secondary">Login</button>
     </header>
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4 text-white" id="middleSpace"></div>
+            <div class="col-md-4 text-white" id="topSpace"></div>
+            <div class="col-md-4 text-white" id="topmiddleSpace">
+                <button type="button" id="globFeedButton" class="btn btn-secondary">Global feed</button>
+                <button type="button" id="perFeedButton" class="btn btn-secondary">Personal feed</button>
+            </div>
+            <div class="col-md-4 text-white" id="topSpace"></div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 text-white" id="middleSpace">
+                <button type="button" id="bweetButton" class="btn btn-primary">Bweet</button>
+            </div>
             <div class="col-md-4 text-white" id="mainFeed"></div>
             <div class="col-md-4 text-white" id="middleSpace"></div>
         </div>
     </div>
-
 
     <!-- js bootstrap -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
