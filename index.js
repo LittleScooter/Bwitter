@@ -12,7 +12,14 @@ app.get("/", function (req, res) {
 app.get("/home", function (req, res) {
     res.sendFile(__dirname + "/index.html");
 })
+app.get("/login", function (req, res) {
+    res.sendFile(__dirname + "/login.html");
+})
+app.get("/register", function (req, res) {
+    res.sendFile(__dirname + "/register.html");
+})
 
+/*Ger en port*/
 const port = process.env.PORT || 3500
 app.listen(port, function () {
     console.log("port:" + port)
