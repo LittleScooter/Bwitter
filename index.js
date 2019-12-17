@@ -19,7 +19,7 @@ app.get("/register", function (req, res) {
     res.sendFile(__dirname + "/register.html");
 })
 
-/*Ger en port*/
+/*Gives a port*/
 const port = process.env.PORT || 3500
 app.listen(port, function () {
     console.log("port:" + port)
