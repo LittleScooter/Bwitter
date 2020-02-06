@@ -21,12 +21,6 @@ h2 {
     border-top-left-radius: 20px;
 }
 
-#mainLogin {
-    background-color: #303030;
-    height: 500px;
-    border-radius: 20px;
-}
-
 #middleSpace {
     height: 1100px;
 }
@@ -64,4 +58,27 @@ h2 {
     float: right;
     margin-top: 20px;
     margin-right: 20px;
+}
+
+/*Login page*/
+
+#mainLogin {
+    background-color: #303030;
+    height: 190px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+#logInLogIn{
+    margin-top: 50px;
+}
+
+#logRightInButton{
+    background-color: #ab1336;
+    border-radius: 15px;
+    border: none;
+    width: 80%;
+    /*Temp*/
+    margin-top: 30px;
 }
