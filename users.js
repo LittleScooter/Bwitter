@@ -4,7 +4,7 @@ module.exports = [{
     },
     {
         id: 2,
-        email: "joseph@joestar.com",
+        email: "hugopersson7@gmail.com",
     },
     {
         id: 3,

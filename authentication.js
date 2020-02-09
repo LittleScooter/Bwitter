@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const email = require("./email.js");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 module.exports = {
     getVerficationToken: getVerficationToken,
@@ -13,7 +14,7 @@ module.exports = {
 }
 const secret = process.env.SECRET;
 async function getVerficationToken(mail) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         const code = crypto.randomBytes(3).toString("hex");
         await email.sendMail(mail, code);
         resolve(createJsonToken({
@@ -39,7 +40,7 @@ function getJsonTokenData(token) {
 }
 
 function encryptData(data) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
         const salt = await bcrypt.genSalt(10);
         const encryptedData = await bcrypt.hash("" + data, salt);
         resolve(encryptedData);

@@ -8,27 +8,44 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.static(__dirname + "/static"))
+app.use(express.json());
+
 
 /*Creates all routes*/
 app.get("/", function (req, res) {
     res.redirect("/home");
 });
-// app.get("/loginToken", function (req, res) {
-//     res.redirect("/loginToken");
-// });
-app.post("/login", function (req, res) {
+app.get("/home", function (req, res) {
+    res.sendFile(__dirname + "/index.html");
+});
+
+app.post("/login", async function (req, res) {
+    if(!req.body) {
+        res.json({error:true,message:"No body"});
+        return;
+    }
+    console.log("DDDD");
     const {
         email
     } = req.body;
+    if(!email){
+        res.json({error:true, message:"NoEmail"});
+        return;
+    }
+    console.log("YYEE",email);
     // Finns konto
     const userMatchEmail = users.filter(user => user.email === email);
     if (userMatchEmail.length > 1) {
         // Detta ska aldrig hända du har gjort nåt fel
         return;
     }
-    if (userMatchEmail === 0) {
+
+    if (userMatchEmail.length === 0) {
         // Konto finns inte
-        res.json({error:true,message:"NoAccount"});
+        res.json({
+            error: true,
+            message: "NoAccount"
+        });
         return;
     }
 
@@ -46,7 +63,7 @@ app.post("/login", function (req, res) {
     });
 
 });
-app.post("/verifyWithCode", function (req, res) {
+app.post("/verifyWithCode", async function (req, res) {
     const {
         token
     } = req.cookies;
@@ -54,20 +71,24 @@ app.post("/verifyWithCode", function (req, res) {
         code
     } = req.body;
 
-    if(!token) {
-        res.json({error:true});
+    if (!token) {
+        res.json({
+            error: true
+        });
         return;
     }
     // läs token
     const data = await authentication.getJsonTokenData(token);
     // Jämför koden i token med koden användare skickade
-    if(authentication.compareCode(code,data.code)){
-        res.cookie("auth",authentication.createAuthToken,{
-            
+    if (authentication.compareCode(code, data.code)) {
+        res.cookie("auth", authentication.createAuthToken, {
+
             httpOnly: true,
             expires: new Date(Date.now() + 1200000), //20 minutes
         });
-        res.json({error:false});
+        res.json({
+            error: false
+        });
     }
     // OM samma skicka auth token
     // Annars skicka fel kod och öka antal fel i token
