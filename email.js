@@ -15,8 +15,6 @@
   });
 
   function sendMail(to, data) {
-      console.log(to    );
-      console.log(data);
       const mailOptions = {
           from: "noreply@gmail.com", // this is what the client should see that it is from
           to: to,
