@@ -4,7 +4,6 @@
       sendMail: sendMail
   }
 
-
   // Here you set the email credentials 
   const transporter = nodemailer.createTransport({
       service: "gmail",

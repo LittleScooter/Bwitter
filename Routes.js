@@ -4,7 +4,6 @@ const authentication = require("./authentication.js")
 
 module.exports = () => {
 
-
     /*initilizes express*/
     const app = express();
 
