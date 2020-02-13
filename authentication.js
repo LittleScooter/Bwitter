@@ -4,8 +4,6 @@ const email = require("./email.js");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 
-const conString = "mongodb+srv://LittleScooter:BingBong8711500504401@cluster0-5h63f.mongodb.net/admin?retryWrites=true&w=majority";
-
 makeConnection();
 async function makeConnection() {
 
