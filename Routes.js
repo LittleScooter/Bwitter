@@ -1,6 +1,7 @@
 const express = require("express");
 const users = require("./users.js");
 const authentication = require("./authentication.js")
+const cookieparser = require("cookie-parser");
 
 module.exports = () => {
 
@@ -9,6 +10,7 @@ module.exports = () => {
 
     app.use(express.static(__dirname + "/static"))
     app.use(express.json());
+    app.use(cookieparser());
 
 
     /*Creates all routes*/
@@ -39,10 +41,11 @@ module.exports = () => {
             return;
         }
         console.log("YYEE", email);
-        // Finns konto
+
+        // Checks if account exists
         const userMatchEmail = users.filter(user => user.email === email);
         if (userMatchEmail.length > 1) {
-            // Detta ska aldrig hända du har gjort nåt fel
+            // This should never happen
             return;
         }
 
@@ -55,9 +58,6 @@ module.exports = () => {
             return;
         }
 
-        // annars skapa verifikations kod
-        // skicka kod med mail
-        // skapa token
         const token = await authentication.getVerficationToken(userMatchEmail[0].email);
         res.cookie("verificationToken", token, {
 
@@ -70,22 +70,27 @@ module.exports = () => {
 
     });
     app.post("/verifyWithCode", async function (req, res) {
+        console.log(req.cookies);
+
         const {
-            token
+            verificationToken
         } = req.cookies;
         const {
             code
         } = req.body;
 
-        if (!token) {
+        if (!verificationToken) {
             res.json({
-                error: true
+                error: true,
+                message: "No token"
             });
             return;
         }
-        // läs token
-        const data = await authentication.getJsonTokenData(token);
-        // Jämför koden i token med koden användare skickade
+
+        // reads the token
+        const data = await authentication.getJsonTokenData(verificationToken);
+
+        // Compares the code to the code sent by the user
         if (authentication.compareCode(code, data.code)) {
             res.cookie("auth", authentication.createAuthToken, {
 
@@ -96,9 +101,6 @@ module.exports = () => {
                 error: false
             });
         }
-        // OM samma skicka auth token
-        // Annars skicka fel kod och öka antal fel i token
-
     });
 
     /*Assigns a port*/

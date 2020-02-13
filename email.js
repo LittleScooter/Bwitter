@@ -20,6 +20,6 @@
           subject: "Verification code",
           html: data
       }
-      // This returns the promise
+      // Returns the promise
       return transporter.sendMail(mailOptions);
   }

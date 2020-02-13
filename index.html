@@ -12,17 +12,54 @@
     <form id="coolForm">
         <input type="email" name="email" placeholder="email" id="email">
         <input type="submit" value="login">
+
+    </form>
+    <form id="verifyWithCode">
+
+        <input name="verCode" placeholder="Verification code" id="verCode">
+        <input type="submit" value="Verifyt">
+
+    </form>
+    <form>
+        <input type="submit" value="skapa profil">
     </form>
 </body>
 
 <script>
-    document.getElementById("coolForm").addEventListener("submit",async function(e){
-        e.preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
+    document.getElementById("verifyWithCode").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const code = document.querySelector("#verCode").value;
+        let fetchResponse = await fetch("/verifyWithCode", {
+            method: "POST",
+            body: JSON.stringify({
+                code: code
+            })
+        });
+        fetchResponse = await fetchResponse.json();
+        console.log(fetchResponse);
+        if (fetchResponse.error) {
+            alert("ERROR");
+        } else {
+            alert("Du är inloggad");
+        }
+    });
+
+    document.getElementById("coolForm").addEventListener("submit", async function (e) {
+        e
+    .preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
         const email = document.querySelector("#email").value; // Får ut värdet från input med id email
         console.log(email);
-        const data = {email:email};
+        const data = {
+            email: email
+        };
         console.log(data);
-        let fetchResponse = await fetch("/login",{method:"POST",body:JSON.stringify(data),headers:{"Content-Type":"application/json"}});
+        let fetchResponse = await fetch("/login", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
         fetchResponse = await fetchResponse.json();
         console.log(fetchResponse);
     });

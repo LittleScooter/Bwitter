@@ -3,29 +3,31 @@ const mongo = require('mongodb').MongoClient;
 const email = require("./email.js");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const express = require("express");
 
-const conString = "mongodb+srv://LittleScooter:BingBong8711500504401@cluster0-5h63f.mongodb.net/admin?retryWrites=true&w=majority";
+const conString = process.env.MONGO;
 
-makeConnection();
-async function makeConnection() {
+// makeConnection();
+// async function makeConnection() {
 
-    const con = await mongo.connect(conString, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    });
+//     const con = await mongo.connect(conString, {
+//         useNewUrlParser: true,
+//         useUnifiedTopology: true
+//     });
 
-    app = express();
+//     app = express();
 
-    app.use(express.urlencoded({
-        extended: false
-    }));
-    app.listen(3005, function () {
-        console.log("port: 3005")
-    });
+//     app.use(express.urlencoded({
+//         extended: false
+//     }));
 
-    app.cars = col;
-    require("./router")(app);
-}
+//     app.listen(8000, function () {
+//         console.log("port: 8000")
+//     });
+
+//     app.cars = col;
+//     require("./router")(app);
+// }
 
 module.exports = {
     getVerficationToken: getVerficationToken,
@@ -37,11 +39,12 @@ module.exports = {
     createAuthToken: createAuthToken
 }
 
-const secret = process.env.SECRET;
+const secret = process.env.TOKENSECRET;
 async function getVerficationToken(mail) {
     return new Promise(async (resolve, reject) => {
         const code = crypto.randomBytes(3).toString("hex");
-        await email.sendMail(mail, code);
+        // await email.sendMail(mail, code);
+        console.log("CODE: ", code);
         resolve(createJsonToken({
             email: mail,
             code: await encryptData(code)
