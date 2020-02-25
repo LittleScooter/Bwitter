@@ -12,7 +12,6 @@ module.exports = () => {
     app.use(express.json());
     app.use(cookieparser());
 
-
     /*Creates all routes*/
     app.get("/", function (req, res) {
         res.redirect("/home");
@@ -102,6 +101,44 @@ module.exports = () => {
             });
         }
     });
+
+    app.post("/makePost", verifyAuth, async function (req, res) {
+
+    });
+
+    //creates an auth token verifyer
+    async function verifyAuth(req, res, next) {
+        // Check if auth cookie exist
+        const cookie = res.cookies.auth;
+        if (!cookie) {
+            res.json({
+                error: true,
+                message: "ingen auth finns"
+            })
+            return;
+        }
+        // Chekc if the cookie is a auth token
+        try {
+            const authData = await authentication.getJsonTokenData(cookie);
+        } catch (err) {
+            res.json({
+                error: true,
+                message: "auth token modified"
+            })
+            return;
+        }
+        if (authData.type === "AUTH") {
+            next();
+        } else {
+            res.json({
+                error: true,
+                message: "wrong token type"
+            })
+            return;
+        }
+        // if yes then user is logged in
+        // else user is not authed
+    }
 
     /*Assigns a port*/
     const port = process.env.PORT || 3005
