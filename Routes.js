@@ -103,7 +103,7 @@ module.exports = () => {
     });
 
     app.post("/makePost", verifyAuth, async function (req, res) {
-
+        //post is made yay
     });
 
     //creates an auth token verifyer
