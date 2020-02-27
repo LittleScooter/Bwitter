@@ -5,6 +5,8 @@
   }
 
   // Here you set the email credentials 
+  console.log("EMAIL",process.env.EMAIL)
+  console.log("PASS",process.env.EMAILPASS)
   const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
