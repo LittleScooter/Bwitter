@@ -2,8 +2,19 @@ const express = require("express");
 const users = require("./users.js");
 const authentication = require("./authentication.js")
 const cookieparser = require("cookie-parser");
+const mongoose = require("mongoose");
 
+const {Schema,model} = mongoose;
 module.exports = () => {
+
+    const userSchema= new Schema({
+        name: String,
+        email: String,
+        tweets: [String],
+        retweets: [String],
+        followers: [String],
+        following: [String]
+    })
 
     /*initilizes express*/
     const app = express();
