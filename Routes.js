@@ -2,19 +2,22 @@ const express = require("express");
 const users = require("./users.js");
 const authentication = require("./authentication.js")
 const cookieparser = require("cookie-parser");
-const mongoose = require("mongoose");
 
-const {Schema,model} = mongoose;
-module.exports = () => {
+module.exports = (mongoose) => {
 
-    const userSchema= new Schema({
+    const {
+        Schema,
+        model
+    } = mongoose;
+    const userSchema = new Schema({
         name: String,
         email: String,
-        tweets: [String],
-        retweets: [String],
+        /* retweets: [String],
         followers: [String],
-        following: [String]
-    })
+        following: [String] */
+    });
+    const User = new model("user", userSchema);
+
 
     /*initilizes express*/
     const app = express();
@@ -53,11 +56,9 @@ module.exports = () => {
         console.log("YYEE", email);
 
         // Checks if account exists
-        const userMatchEmail = users.filter(user => user.email === email);
-        if (userMatchEmail.length > 1) {
-            // This should never happen
-            return;
-        }
+        const userMatchEmail = users.findOne({
+            email: email
+        });
 
         if (userMatchEmail.length === 0) {
             // Konto finns inte
@@ -68,7 +69,7 @@ module.exports = () => {
             return;
         }
 
-        const token = await authentication.getVerficationToken(userMatchEmail[0].email);
+        const token = await authentication.getVerficationToken(userMatchEmail.email, "LOGIN");
         res.cookie("verificationToken", token, {
 
             httpOnly: true,
@@ -79,6 +80,63 @@ module.exports = () => {
         });
 
     });
+
+    app.post("/register", async  (req, res) => {
+        if (!req.body) {
+            res.json({
+                error: true,
+                message: "No body"
+            });
+            return;
+        }
+        console.log("DDDD");
+        const {
+            email,
+            name
+        } = req.body;
+        if (!email) {
+            res.json({
+                error: true,
+                message: "NoEmail"
+            });
+            return;
+        }
+        if (!name) {
+            res.json({
+                error: true,
+                message: "NoName"
+            });
+            return;
+        }
+        console.log("YYEE", email);
+
+        // Checks if account exists
+        const userMatchEmail = await User.findOne({
+            email: email
+        });
+        if (userMatchEmail.length === 1) {
+            res.json({
+                error: true,
+                message: "EmailExists"
+            });
+            return;
+        }
+
+        const token = await authentication.getVerficationToken(email, "REGISTER", {
+            name: name,
+            email: email
+        });
+        res.cookie("verificationToken", token, {
+
+            httpOnly: true,
+            expires: new Date(Date.now() + 1200000), //20 minutes
+        });
+        res.json({
+            error: false
+        });
+
+    });
+
     app.post("/verifyWithCode", async function (req, res) {
         console.log(req.cookies);
 
@@ -102,6 +160,11 @@ module.exports = () => {
 
         // Compares the code to the code sent by the user
         if (authentication.compareCode(code, data.code)) {
+
+            if (data.type === "REGISTER") {
+                const newUser = new User(data.user);
+                await newUser.save();
+            }
             res.cookie("auth", authentication.createAuthToken, {
 
                 httpOnly: true,
