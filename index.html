@@ -51,8 +51,7 @@
     });
 
     document.getElementById("coolForm").addEventListener("submit", async function (e) {
-        e
-            .preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
+        e.preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
         const email = document.querySelector("#email").value; // Får ut värdet från input med id email
         console.log(email);
         const data = {
@@ -76,5 +75,4 @@
         })
     });
 </script>
-
 </html>

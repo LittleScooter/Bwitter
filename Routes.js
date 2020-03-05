@@ -34,6 +34,7 @@ module.exports = (mongoose) => {
         res.sendFile(__dirname + "/index.html");
     });
 
+    //logs in user
     app.post("/login", async function (req, res) {
         if (!req.body) {
             res.json({
@@ -177,7 +178,7 @@ module.exports = (mongoose) => {
     });
 
     app.post("/makePost", verifyAuth, async function (req, res) {
-        //post is made yay
+        
     });
 
     //creates an auth token verifyer
