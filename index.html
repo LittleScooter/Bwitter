@@ -8,7 +8,7 @@
     <title>Bwitter Home</title>
 </head>
 
-<body> 
+<body>
     <form id="coolForm">
         <input type="email" name="email" placeholder="email" id="email">
         <input type="submit" value="login">
@@ -26,7 +26,6 @@
     <div id="otherpages">
         <form>
             <input type="submit" value="makePost">
-            <input type="submit" value="viewFeed">
         </form>
     </div>
 </body>
@@ -51,7 +50,8 @@
     });
 
     document.getElementById("coolForm").addEventListener("submit", async function (e) {
-        e.preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
+        e
+    .preventDefault(); // Stoppar formet från att skicka en http request, stoppar form från att göra default
         const email = document.querySelector("#email").value; // Får ut värdet från input med id email
         console.log(email);
         const data = {
@@ -72,7 +72,8 @@
     document.getElementById("makePost").addEventListener("submit", async function (e) {
         let fetchResponse = await fetch("/makePost", {
             method: "POST",
-        })
+        });
     });
 </script>
+
 </html>

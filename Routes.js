@@ -18,7 +18,6 @@ module.exports = (mongoose) => {
     });
     const User = new model("user", userSchema);
 
-
     /*initilizes express*/
     const app = express();
 
@@ -32,6 +31,9 @@ module.exports = (mongoose) => {
     });
     app.get("/home", function (req, res) {
         res.sendFile(__dirname + "/index.html");
+    });
+    app.get("/feed", function (req, res){
+        res.sendFile(__dirname + "/feed.html");
     });
 
     //logs in user
