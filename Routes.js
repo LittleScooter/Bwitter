@@ -1,5 +1,4 @@
 const express = require("express");
-const users = require("./users.js");
 const authentication = require("./authentication.js")
 const cookieparser = require("cookie-parser");
 
@@ -59,10 +58,10 @@ module.exports = (mongoose) => {
         console.log("YYEE", email);
 
         // Checks if account exists
-        const userMatchEmail = users.findOne({
+        const userMatchEmail = User.findOne({
             email: email
         });
-
+        
         if (userMatchEmail.length === 0) {
             // Konto finns inte
             res.json({
@@ -117,7 +116,7 @@ module.exports = (mongoose) => {
         const userMatchEmail = await User.findOne({
             email: email
         });
-        if (userMatchEmail.length === 1) {
+        if (userMatchEmail) {
             res.json({
                 error: true,
                 message: "EmailExists"
@@ -180,7 +179,10 @@ module.exports = (mongoose) => {
     });
 
     app.post("/makePost", verifyAuth, async function (req, res) {
-        
+        // req.body
+        // Get data
+        // create post object
+        // Save post object
     });
 
     //creates an auth token verifyer

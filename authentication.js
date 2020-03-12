@@ -43,7 +43,7 @@ const secret = process.env.TOKENSECRET;
 async function getVerficationToken(mail, type, user) {
     return new Promise(async (resolve, reject) => {
         const code = crypto.randomBytes(3).toString("hex");
-        await email.sendMail(mail, code);
+        // await email.sendMail(mail, code);
         console.log("CODE: ", code);
         resolve(createJsonToken({
             email: mail,
