@@ -39,7 +39,7 @@ module.exports = {
     createAuthToken: createAuthToken
 }
 
-const secret = process.env.TOKENSECRET;
+const secret = process.env.SECRET;
 async function getVerficationToken(mail, type, user) {
     return new Promise(async (resolve, reject) => {
         const code = crypto.randomBytes(3).toString("hex");

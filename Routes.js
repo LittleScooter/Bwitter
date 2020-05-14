@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const authentication = require("./authentication.js")
 const cookieparser = require("cookie-parser");
@@ -18,10 +19,15 @@ module.exports = (mongoose) => {
     const User = new model("user", userSchema);
 
     /*initilizes express*/
+    const corsOptions = {
+        origin: true,
+        credentials: true,
+    }
     const app = express();
 
     app.use(express.static(__dirname + "/static"))
     app.use(express.json());
+    app.use(cors(corsOptions));
     app.use(cookieparser());
 
     /*Creates all routes*/
@@ -37,6 +43,7 @@ module.exports = (mongoose) => {
 
     //logs in user
     app.post("/login", async function (req, res) {
+        console.log("ubreojhg9odjod");
         if (!req.body) {
             res.json({
                 error: true,
