@@ -12,11 +12,26 @@ module.exports = (mongoose) => {
     const userSchema = new Schema({
         name: String,
         email: String,
-        /* retweets: [String],
         followers: [String],
-        following: [String] */
+        following: [String],
+        likedTweests:[String]
     });
+    
+    const tweetSchema = new Schema({
+        author:{
+            name:String,
+            id:String
+        },
+        body:String,
+        likes:{
+            type:Number,
+            default:1,
+        },
+    })
+    const Tweet = new model("tweet",tweetSchema);
     const User = new model("user", userSchema);
+
+
 
     /*initilizes express*/
     const corsOptions = {
@@ -174,7 +189,7 @@ module.exports = (mongoose) => {
                 const newUser = new User(data.user);
                 await newUser.save();
             }
-            res.cookie("auth", authentication.createAuthToken, {
+            res.cookie("auth", authentication.createAuthToken(), {
 
                 httpOnly: true,
                 expires: new Date(Date.now() + 1200000), //20 minutes
@@ -185,27 +200,80 @@ module.exports = (mongoose) => {
         }
     });
 
-    app.post("/makePost", verifyAuth, async function (req, res) {
-        // req.body
+    app.post("/makeTweet", verifyAuth, async function (req, res) {
+        const body = req.body.body;
         // Get data
+        const authData = await authentication.getJsonTokenData(req.cookies.auth);
+
+        const user = Tweet.findOne({email:authData.email});
+
+        const newTweet = new Tweet({
+            author:{
+                name:user.name,
+                id:user.id
+            },
+            body:body,         
+
+        })
+        await newTweet.save();
+        res.json({error:false});
         // create post object
         // Save post object
     });
 
+    app.post("/delTweet", verifyAuth, async function (req, res){
+        //get id
+        //yeet tweet
+    });
+
+    //kollar om man är inloggad med cookie
+    app.post("/userInfo",verifyAuth, async (req,res)=>{
+        console.log("user info");
+        res.json({error:false});
+    })
+
+    app.post("/getGlobalFeed",verifyAuth,(refq,res)=>{
+        let tweets = await Tweet.find();
+        const authData = await authentication.getJsonTokenData(req.cookies.auth);
+        const user = Tweet.findOne({email:authData.email});
+
+        tweets.map((value) => {
+            // gå igenom alla tweets
+            //checka om du har likat dom
+            
+            value.liked=user.liked.includes((value.id));
+            return{value};
+        })
+    });
+    
+    app.post("/getPersonalFeed",(req,res)=>{
+        const authData = await authentication.getJsonTokenData(req.cookies.auth);
+
+        const user = Tweet.findOne({email:authData.email});
+
+        let tweets = await Tweet.find({"author.id":{$in:user.following}}); /* Hugo wrote this line and it is beutiful */
+        tweets.map((value) => {
+            value.liked=user.liked.includes((value.id));
+            return{value};
+        })
+
+        
+    });
     //creates an auth token verifyer
     async function verifyAuth(req, res, next) {
         // Check if auth cookie exist
-        const cookie = res.cookies.auth;
+        const cookie = req.cookies.auth;
         if (!cookie) {
             res.json({
                 error: true,
-                message: "ingen auth finns"
+                message: "NoAuth"
             })
             return;
         }
         // Chekc if the cookie is a auth token
         try {
-            const authData = await authentication.getJsonTokenData(cookie);
+            console.log("COOKIE",cookie);
+            var authData = await authentication.getJsonTokenData(cookie);
         } catch (err) {
             res.json({
                 error: true,

@@ -7,5 +7,6 @@ async function init() {
     mongoose.set('useUnifiedTopology', true);
     require("dotenv").config();
     await mongoose.connect(process.env.MONGO);
+    mongoose.mongo.ObjectID
     require("./Routes.js")(mongoose);
 }

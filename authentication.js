@@ -77,7 +77,7 @@ function encryptData(data) {
     });
 }
 
-function createAuthToken(email) {
+function createAuthToken(email, id) {
 
     return createJsonToken({
         email: email,
