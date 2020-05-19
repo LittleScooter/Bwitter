@@ -28,10 +28,9 @@ module.exports = (mongoose) => {
             default:1,
         },
     })
+
     const Tweet = new model("tweet",tweetSchema);
     const User = new model("user", userSchema);
-
-
 
     /*initilizes express*/
     const corsOptions = {
@@ -58,7 +57,6 @@ module.exports = (mongoose) => {
 
     //logs in user
     app.post("/login", async function (req, res) {
-        console.log("ubreojhg9odjod");
         if (!req.body) {
             res.json({
                 error: true,
@@ -66,7 +64,6 @@ module.exports = (mongoose) => {
             });
             return;
         }
-        console.log("DDDD");
         const {
             email
         } = req.body;
@@ -77,8 +74,6 @@ module.exports = (mongoose) => {
             });
             return;
         }
-        console.log("YYEE", email);
-
         // Checks if account exists
         const userMatchEmail = User.findOne({
             email: email

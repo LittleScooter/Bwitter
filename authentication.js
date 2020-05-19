@@ -7,28 +7,6 @@ const express = require("express");
 
 const conString = process.env.MONGO;
 
-// makeConnection();
-// async function makeConnection() {
-
-//     const con = await mongo.connect(conString, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true
-//     });
-
-//     app = express();
-
-//     app.use(express.urlencoded({
-//         extended: false
-//     }));
-
-//     app.listen(8000, function () {
-//         console.log("port: 8000")
-//     });
-
-//     app.cars = col;
-//     require("./router")(app);
-// }
-
 module.exports = {
     getVerficationToken: getVerficationToken,
     createJsonToken: createJsonToken,
@@ -40,10 +18,10 @@ module.exports = {
 }
 
 const secret = process.env.SECRET;
+//skapar en tooken/inlogg kod
 async function getVerficationToken(mail, type, user) {
     return new Promise(async (resolve, reject) => {
         const code = crypto.randomBytes(3).toString("hex");
-        // await email.sendMail(mail, code);
         console.log("CODE: ", code);
         resolve(createJsonToken({
             email: mail,
@@ -55,6 +33,7 @@ async function getVerficationToken(mail, type, user) {
     });
 }
 
+//gemför inskrivna koden med genererade
 function compareCode(code, encryptedCode) {
     return bcrypt.compare(code, encryptedCode);
 }
@@ -78,7 +57,6 @@ function encryptData(data) {
 }
 
 function createAuthToken(email, id) {
-
     return createJsonToken({
         email: email,
         type: "AUTH"
